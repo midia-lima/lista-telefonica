@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="listaTelefonica">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista telefônica</title>
+
+    <!-- Importando o Bootstrap -->
+    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.css">
+
+    <style>
+        .jumbotron {
+            width: 450px;
+            text-align: center;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 5px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: #fff;
+        }
+
+        .table {
+            margin-top: 20px;
+          
+        }
+
+        .form-control {
+            margin-bottom: 4px;
+        }
+    </style>
+
+    <!-- Importando o AngularJS -->
+    <script src="./lib/angular/angular.min.js"></script>
+
+    <script>
+        //módulo
+        angular.module('listaTelefonica', [])
+
+        //controllers
+        angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope) {
+            $scope.app = "Lista Telefônica"
+            $scope.contatos = [
+                { nome: "Diane Lockhart", telefone: "948993683" },
+                { nome: "Lucca Quinn", telefone: "936581259" },
+                { nome: "Maia Rindell", telefone: "948993333" },
+                { nome: "Liz Reddick", telefone: "948955658" },
+                { nome: "Marisa Gold", telefone: "911111111" },
+                { nome: "Adrian Boseman", telefone: "94899999" },
+                { nome: "Jay Dipersia", telefone: "948998888" }
+            ]
+
+            $scope.adicionarContato = function (contato) {
+                $scope.contatos.push(contato);
+            }
+        })
+    </script>
+</head>
+
+
+<body ng-controller="ListaTelefonicaCtrl">
+    <div class="jumbotron bg-dark">
+        <h3>{{ app }}</h3>
+        <table class="table table-striped text-warning">
+            <tr>
+                <th>Nome</th>
+                <th>Telefone</th>
+            </tr>
+            <tr ng-repeat="contato in contatos">
+                <td>{{ contato.nome }}</td>
+                <td>{{ contato.telefone}}</td>
+            </tr>
+        </table>
+        </hr>
+        <input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome">
+        <input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone">
+        <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)">Adicionar Contato</button>
+    </div>
+</body>
+
+</html>
