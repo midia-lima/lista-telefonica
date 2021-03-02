@@ -39,10 +39,11 @@
 
     <!-- Importando o AngularJS -->
     <script src="./lib/angular/angular.min.js"></script>
+    <script src="./lib/angular/angular-messages.js"></script>
 
     <script>
         //módulo
-        angular.module('listaTelefonica', [])
+        angular.module('listaTelefonica', ["ngMessages"])
 
         //controllers
         angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope) {
@@ -63,9 +64,11 @@
                 { nome: "Embratel", codigo: 52, categoria: "Fixo" },
             ]
 
-            // função que adiciona o contato no array contatos 
+            //função que adiciona o contato no array contatos 
             $scope.adicionarContato = function (contato) {
-                $scope.contatos.push(contato);
+                $scope.contatos.push(angular.copy(contato));
+                delete $scope.contato;
+                $scope.contatoForm.$setPristine();
             }
 
             //função que apaga contatos
@@ -81,14 +84,10 @@
                     return contato.selecionado
                 })
             }
-
-
-
-
         })
+
     </script>
 </head>
-
 
 <body ng-controller="ListaTelefonicaCtrl">
     <div class="jumbotron bg-dark">
@@ -106,26 +105,37 @@
             <tr class="text-danger" ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos">
                 <td><input type="checkbox" ng-model="contato.selecionado"></td>
                 <td>{{ contato.nome }}</td>
-                <td>{{ contato.telefone}}</td>
-                <td>{{ contato.operadora.nome}}</td>
+                <td>{{ contato.telefone }}</td>
+                <td>{{ contato.operadora.nome }}</td>
                 <td>
                     <div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div>
                 </td>
-
             </tr>
 
         </table>
-        </hr>
+        </hr>       
 
-        <input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome">
-        <input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone">
+        <form name="contatoForm">
+            <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome" ng-required="true" ng-minlength="10">
+            <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
 
-        <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
-            <option value="">Selecione uma operadora</option>
-        </select>
+            <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
+                <option value="">Selecione uma operadora</option>
+            </select>
+        </form>
 
-        <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="!contato.nome || !contato.telefone">Adicionar Contato</button>
-        <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-show="isContatoSelecionado(contatos)">Apagar Contatos</button>
+        <div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+            <div ng-message="required && contatoForm.nome.$dirty">Por favor, preencha o campo nome</div>
+            <div ng-message="minlength">O campo nome deve ter no mínimo 10 caracteres</div>
+        </div>
+
+        <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger">
+            <div ng-message="required && contatoForm.telefone.$dirty">Por favor, preencha o campo telefone</div>
+            <div ng-message="pattern">O campo telefone deve ter o formato XXXXX-XXXX</div>
+        </div>
+
+        <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
+        <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
 
     </div> 
 
