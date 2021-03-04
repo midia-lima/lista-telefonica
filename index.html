@@ -47,32 +47,37 @@
         angular.module('listaTelefonica', ["ngMessages"])
 
         //controllers
-        angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter) {
-            $scope.app = "Lista Telefônica"
-            $scope.contatos = [
-               
-                { nome: $filter('uppercase')("Lucca Quinn"), telefone: "136581259", data: new Date(), cor: "yellow", operadora: { nome: "Tim", codigo: 41, categoria: "Celular" }},
-                { nome: "Maia Rindell", telefone: "348993333", data: new Date(), cor: "red", operadora:  { nome: "Vivo", codigo: 15, categoria: "Celular" }},
-                { nome: "Diane Lockhart", telefone: "248993683", data: new Date(), cor: "blue", operadora: { nome: "Claro", codigo: 21, categoria: "Celular" }}
+        angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter, $http) {
+            $scope.app = "Lista Telefônica"            
+            $scope.contatos = []
+            $scope.operadoras = []
 
-            ]
+            //exemplo de uma função GET array de contatos
+            var carregarContatos = function () {
+                $http.get("endpointdaapi").sucesss(function (data, status) {
+                    $scope.contatos = data;
+                }).error(function(data, status){
+                    $scope.message = "Deu ruim " +  data
+                })
+            }
 
-            $scope.operadoras = [
-                { nome: "Oi", codigo: 31, categoria: "Celular", preco: 2 },
-                { nome: "Tim", codigo: 41, categoria: "Celular", preco: 1 },
-                { nome: "Vivo", codigo: 15, categoria: "Celular", preco: 3 },
-                { nome: "Claro", codigo: 21, categoria: "Celular", preco: 1 },
-                { nome: "GTV", codigo: 51, categoria: "Fixo", preco: 3 },
-                { nome: "Embratel", codigo: 52, categoria: "Fixo", preco: 2 },
-            ]
+            //exemplo de uma função GET array de operadoras
+            var carregarOperadoras = function (){
+                $http.get("endpointdaapi").sucesss(function(data,status){
+                    $scope.operadoras = data;
+
+                })
+            }
 
             //função que adiciona o contato no array contatos 
             $scope.adicionarContato = function (contato) {
-                $scope.contatos.push(angular.copy(contato));
-                delete $scope.contato;
-                $scope.contatoForm.$setPristine();
+                $http.post("endpointdaapi", contato).sucesss(function(data){
+                    delete $scope.contato;
+                    $scope.contatoForm.$setPristine();
+                    carregarContatos();
+                });                
             }
-
+ 
             //função que apaga contatos
             $scope.apagarContatos = function (contatos) {
                 $scope.contatos = contatos.filter(function (contato) {
@@ -102,20 +107,22 @@
     <div class="jumbotron bg-dark">
         <h3>{{ app }}</h3>
 
+        {{ message }}    
+
         <input class="form-control" type="text" ng-model="criterioDeBusca"  placeholder="O que você está buscando?">
 
         <table class="table">
 
             <tr class="text-light">
                 <th></th>    
-                <th><a href="" ng-click="ordenarPor('nome')">Nome</th></a>
-                <th><a href="" ng-click="ordenarPor('telefone')">Telefone</th></a>
+                <th>Nome</th>
+                <th>Telefone</th>
                 <th>Operadora</th>
                 <th>Data</th>
                 <th></th>
             </tr>
 
-            <tr class="text-danger" ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | limitTo:2 | filter:nome:criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao">
+            <tr class="text-danger" ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca">
                 <td><input type="checkbox" ng-model="contato.selecionado"></td>                
                 <td>{{ contato.nome }}</td>
                 <td>{{ contato.telefone }}</td>
