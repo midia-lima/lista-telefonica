@@ -1,0 +1,24 @@
+.jumbotron {
+    width: 700px;
+    text-align: center;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 5px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #fff;
+}
+
+.table {
+    margin-top: 20px;
+
+}
+
+.form-control {
+    margin-bottom: 4px;
+}
+
+.selecionado {
+    background-color: yellow;
+    font-weight: bold;
+}

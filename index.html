@@ -9,98 +9,15 @@
 
     <!-- Importando o Bootstrap -->
     <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.css">
-
-    <style>
-        .jumbotron {
-            width: 700px;
-            text-align: center;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 5px;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            color: #fff;
-        }
-
-        .table {
-            margin-top: 20px;
-
-        }
-
-        .form-control {
-            margin-bottom: 4px;
-        }
-
-        .selecionado {
-            background-color: yellow;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/style.css">
+   
 
     <!-- Importando o AngularJS -->
     <script src="./lib/angular/angular.min.js"></script>
     <script src="./lib/angular/angular-messages.js"></script>
     <script src="./lib/angular/angular-locale_pt-br.js"></script>
-
-    <script>
-        //módulo
-        angular.module('listaTelefonica', ["ngMessages"])
-
-        //controllers
-        angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter, $http) {
-            $scope.app = "Lista Telefônica"            
-            $scope.contatos = []
-            $scope.operadoras = []
-
-            //exemplo de uma função GET array de contatos
-            var carregarContatos = function () {
-                $http.get("endpointdaapi").sucesss(function (data, status) {
-                    $scope.contatos = data;
-                }).error(function(data, status){
-                    $scope.message = "Deu ruim " +  data
-                })
-            }
-
-            //exemplo de uma função GET array de operadoras
-            var carregarOperadoras = function (){
-                $http.get("endpointdaapi").sucesss(function(data,status){
-                    $scope.operadoras = data;
-
-                })
-            }
-
-            //função que adiciona o contato no array contatos 
-            $scope.adicionarContato = function (contato) {
-                $http.post("endpointdaapi", contato).sucesss(function(data){
-                    delete $scope.contato;
-                    $scope.contatoForm.$setPristine();
-                    carregarContatos();
-                });                
-            }
- 
-            //função que apaga contatos
-            $scope.apagarContatos = function (contatos) {
-                $scope.contatos = contatos.filter(function (contato) {
-                    if (!contato.selecionado) return contato;
-                })
-            }
-
-            //função que desabilita o botão se não tem contatos selecionados
-            $scope.isContatoSelecionado = function (contatos) {
-                return contatos.some(function (contato) {
-                    return contato.selecionado
-                })
-            }
-
-            //função que ordena por nome e telefone
-            $scope.ordenarPor = function (campo) {
-                $scope.criterioDeOrdenacao = campo;
-                $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-
-            }
-        })
-
-    </script>
+    <script src="./js/app.module.js"></script>
+    <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script>    
 </head>
 
 <body ng-controller="ListaTelefonicaCtrl">
