@@ -1,5 +1,5 @@
 //controllers
-angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter, $http) {
+angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter, $http, contatosAPI, operadorasAPI, serialGenerator) {
     $scope.app = "Lista Telefônica"
 
     $scope.contatos = [
@@ -7,34 +7,37 @@ angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($s
         { nome: "Sandra", telefone: "9999-3333", data: new Date(), operadora: { nome: "Vivo", codigo: 15, categoria: "Celular" } },
         { nome: "Mariana", telefone: "9999-9999", data: new Date(), operadora: { nome: "Tim", codigo: 41, categoria: "Celular" } }
     ]
+
     $scope.operadoras = [
         { nome: "Oi", codigo: 14, categoria: "Celular", preco: 2 },
         { nome: "Vivo", codigo: 15, categoria: "Celular", preco: 1 },
         { nome: "Tim", codigo: 41, categoria: "Celular", preco: 3 },
         { nome: "GVT", codigo: 25, categoria: "Fixo", preco: 1 },
         { nome: "Embratel", codigo: 21, categoria: "Fixo", preco: 2 }
-    ]
+    ]   
 
     //exemplo de uma função GET array de contatos
     var carregarContatos = function () {
-        $http.get("endpointdaapi").sucesss(function (data, status) {
+        contatosAPI.getContatos.sucesss(function (data, status) {
             $scope.contatos = data;
         }).error(function (data, status) {
             $scope.message = "Deu ruim " + data
         })
     }
 
-    //exemplo de uma função GET   array de operadoras
+    //exemplo de uma função GET array de operadoras
     var carregarOperadoras = function () {
-        $http.get("endpointdaapi").sucesss(function (data, status) {
+        operadorasAPI.getOperadoras().sucesss(function (data, status) {
             $scope.operadoras = data;
 
         })
     }
 
     //função que adiciona o contato no array contatos 
-    $scope.adicionarContato = function (contato) {
-        $http.post("endpointdaapi", contato).sucesss(function (data) {
+    $scope.adicionarContato = function (contato) {        
+        contato.serial = serialGenerator.generate();
+        contato.data = new Date();
+        contatosAPI.saveContatos(contato).sucesss(function (data) {
             delete $scope.contato;
             $scope.contatoForm.$setPristine();
             carregarContatos();

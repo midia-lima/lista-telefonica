@@ -17,7 +17,12 @@
     <script src="./lib/angular/angular-messages.js"></script>
     <script src="./lib/angular/angular-locale_pt-br.js"></script>
     <script src="./js/app.module.js"></script>
-    <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script>    
+    <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script> 
+    <script src="../lista-telefonica/js/services/contatos-service.js"></script>   
+    <script src="../lista-telefonica/js/services/operadoras-service.js"></script>
+    <script src="../lista-telefonica/js/services/serial-generator.js"></script>
+    <script src="../lista-telefonica/js/config/serial-generator-config.js"></script>
+    <script src="../lista-telefonica/js/value/config.js"></script>
 </head>
 
 <body ng-controller="ListaTelefonicaCtrl">
@@ -31,7 +36,8 @@
         <table class="table">
 
             <tr class="text-light">
-                <th></th>    
+                <th></th> 
+                <th>Serial</th>    
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Operadora</th>
@@ -40,7 +46,8 @@
             </tr>
 
             <tr class="text-danger" ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca">
-                <td><input type="checkbox" ng-model="contato.selecionado"></td>                
+                <td><input type="checkbox" ng-model="contato.selecionado"></td> 
+                <td>{{ contato.serial }}</td>               
                 <td>{{ contato.nome }}</td>
                 <td>{{ contato.telefone }}</td>
                 <td>{{ contato.operadora.nome | lowercase }}</td>
