@@ -21,7 +21,8 @@ angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($s
         contatosAPI.getContatos.sucesss(function (data, status) {
             $scope.contatos = data;
         }).error(function (data, status) {
-            $scope.message = "Deu ruim " + data
+            console.log(data);
+            $scope.error = "Não foi possível carregar os dados!"
         })
     }
 

@@ -10,34 +10,41 @@
     <!-- Importando o Bootstrap -->
     <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="./css/style.css">
-   
+    <link rel="stylesheet" href="./css/iu.css">
+
 
     <!-- Importando o AngularJS -->
     <script src="./lib/angular/angular.min.js"></script>
     <script src="./lib/angular/angular-messages.js"></script>
     <script src="./lib/angular/angular-locale_pt-br.js"></script>
     <script src="./js/app.module.js"></script>
-    <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script> 
-    <script src="../lista-telefonica/js/services/contatos-service.js"></script>   
+    <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script>
+    <script src="../lista-telefonica/js/services/contatos-service.js"></script>
     <script src="../lista-telefonica/js/services/operadoras-service.js"></script>
     <script src="../lista-telefonica/js/services/serial-generator.js"></script>
     <script src="../lista-telefonica/js/config/serial-generator-config.js"></script>
     <script src="../lista-telefonica/js/value/config.js"></script>
     <script src="./js/filters/name-filter.js"></script>
-    <script src="./js/filters/ellipsis-filter.js"></script>
+    <script src="./js/directives/uiAlertDirective.js"></script>
+    <!-- <script src="./js/filters/ellipsis-filter.js"></script> -->
 </head>
 
 <body ng-controller="ListaTelefonicaCtrl">
     <div class="jumbotron bg-dark">
-        <h3>{{ app }}</h3>           
+        <h3>{{ app }}</h3>   
+        
+        {{$id}}
+        <ui-alert title="Ops, aconteceu um problema">
+            Não foi possível carregar os dados!
+        </ui-alert>       
 
-        <input class="form-control" type="text" ng-model="criterioDeBusca"  placeholder="O que você está buscando?">
+        <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
 
         <table class="table">
 
             <tr class="text-light">
-                <th></th> 
-                <th>Serial</th>    
+                <th></th>
+                <th>Serial</th>
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Operadora</th>
@@ -45,10 +52,11 @@
                 <th></th>
             </tr>
 
-            <tr class="text-danger" ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca">
-                <td><input type="checkbox" ng-model="contato.selecionado"></td> 
-                <td>{{ contato.serial }}</td>               
-                <td>{{ contato.nome | name | ellipsis:10 }}</td>
+            <tr class="text-danger" ng-class="{selecionado: contato.selecionado}"
+                ng-repeat="contato in contatos | filter:criterioDeBusca">
+                <td><input type="checkbox" ng-model="contato.selecionado"></td>
+                <td>{{ contato.serial }}</td>
+                <td>{{ contato.nome | name }}</td>
                 <td>{{ contato.telefone }}</td>
                 <td>{{ contato.operadora.nome | lowercase }}</td>
                 <td>{{ contato.data | date: 'dd/MM/yyyy' }}</td>
@@ -60,13 +68,16 @@
             </tr>
 
         </table>
-        </hr>       
+        </hr>
 
         <form name="contatoForm">
-            <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome" ng-required="true" ng-minlength="10">
-            <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+            <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome"
+                ng-required="true" ng-minlenrequiredgth="10">
+            <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone"
+                ng-="true" ng-pattern="/^\d{4,5}-\d{4}$/">
 
-            <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' for operadora in operadoras | orderBy: 'nome'">
+            <select class="form-control" ng-model="contato.operadora"
+                ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' for operadora in operadoras | orderBy: 'nome'">
                 <option value="">Selecione uma operadora</option>
             </select>
         </form>
@@ -81,13 +92,15 @@
             <div ng-message="pattern">O campo telefone deve ter o formato XXXXX-XXXX</div>
         </div>
 
-        <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
-        <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
-        
+        <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)"
+            ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
+        <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)"
+            ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
+
     </div>
 
     <!-- <div ng-include="'footer.html'"></div> -->
-    
+
 </body>
 
 </html>
