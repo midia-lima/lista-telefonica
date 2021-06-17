@@ -1,6 +1,9 @@
 //controllers
 angular.module('listaTelefonica').controller('ListaTelefonicaCtrl', function ($scope, $filter, $http, contatosAPI, operadorasAPI, serialGenerator) {
     $scope.app = "Lista Telefônica"
+    $scope.contato = {
+        data: 1623812400000
+    };
 
     $scope.contatos = [
         { nome: "Bruno", telefone: "9999-2222", data: new Date(), operadora: { nome: "Oi", codigo: 14, categoria: "Celular" } },
