@@ -27,17 +27,31 @@
     <script src="./js/filters/name-filter.js"></script>
     <script src="./js/directives/uiAlertDirective.js"></script>
     <script src="./js/directives/uiDateDirective.js"></script>
+    <script src="./js/directives/uiAccordionDirective.js"></script>
     <!-- <script src="./js/filters/ellipsis-filter.js"></script> -->
 </head>
 
 <body ng-controller="ListaTelefonicaCtrl">
     <div class="jumbotron bg-dark">
-        <h3>{{ app }}</h3>   
-        
-        {{$id}}
+
+        <ui-accordions>
+            <ui-accordion title="Accordion 1">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Autem doloribus ratione aut adipisci illo explicabo accusamus
+                deserunt repudiandae quia voluptatem eligendi quae repellat
+                quaerat, sit suscipit magnam consectetur dignissimos tenetur!
+            </ui-accordion>
+            <ui-accordion title="Accordion 2"></ui-accordion>
+        </ui-accordions>
+
+
+
+        <h3>{{ app }}</h3>
+
+
         <ui-alert title="Ops, aconteceu um problema">
             Não foi possível carregar os dados!
-        </ui-alert>       
+        </ui-alert>
 
         <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
 
@@ -76,8 +90,8 @@
                 ng-required="true" ng-minlenrequiredgth="10">
             <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone"
                 ng-="true" ng-pattern="/^\d{4,5}-\d{4}$/">
-            <input class="form-control" type="text" ng-model="contato.data" name="data" placeholder="Data" ui-date>    
-            {{ contato.data }}
+            <input class="form-control" type="text" ng-model="contato.data" name="data" placeholder="Data" ui-date>
+
             <select class="form-control" ng-model="contato.operadora"
                 ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' for operadora in operadoras | orderBy: 'nome'">
                 <option value="">Selecione uma operadora</option>
