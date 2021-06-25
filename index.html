@@ -17,24 +17,38 @@
     <script src="./lib/angular/angular.min.js"></script>
     <script src="./lib/angular/angular-messages.js"></script>
     <script src="./lib/angular/angular-locale_pt-br.js"></script>
+    <script src="./lib/serialGenerator/serialGenerator.js"></script>
+    <!-- <script src="./lib/uiAccordion/uiAccordionDirective.js"></script> -->
+
     <script src="./js/app.module.js"></script>
+
+    <!-- controller -->
     <script src="../lista-telefonica/js/controller/ListaTelefonicaCtrl.js"></script>
+
+    <!-- services -->
     <script src="../lista-telefonica/js/services/contatos-service.js"></script>
     <script src="../lista-telefonica/js/services/operadoras-service.js"></script>
-    <script src="../lista-telefonica/js/services/serial-generator.js"></script>
+
+    
     <script src="../lista-telefonica/js/config/serial-generator-config.js"></script>
     <script src="../lista-telefonica/js/value/config.js"></script>
+
+    <!-- filters -->
     <script src="./js/filters/name-filter.js"></script>
+    <!-- <script src="./js/filters/ellipsis-filter.js"></script> -->
+
+    <!-- directives -->
     <script src="./js/directives/uiAlertDirective.js"></script>
     <script src="./js/directives/uiDateDirective.js"></script>
-    <script src="./js/directives/uiAccordionDirective.js"></script>
-    <!-- <script src="./js/filters/ellipsis-filter.js"></script> -->
+    
+
+    
 </head>
 
 <body ng-controller="ListaTelefonicaCtrl">
     <div class="jumbotron bg-dark">
 
-        <ui-accordions>
+        <!-- <ui-accordions>
             <ui-accordion title="Accordion 1">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
                 Autem doloribus ratione aut adipisci illo explicabo accusamus
@@ -42,12 +56,9 @@
                 quaerat, sit suscipit magnam consectetur dignissimos tenetur!
             </ui-accordion>
             <ui-accordion title="Accordion 2"></ui-accordion>
-        </ui-accordions>
-
-
+        </ui-accordions> -->
 
         <h3>{{ app }}</h3>
-
 
         <ui-alert title="Ops, aconteceu um problema">
             Não foi possível carregar os dados!
