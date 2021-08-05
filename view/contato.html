@@ -1,0 +1,79 @@
+<div class="jumbotron bg-dark">
+
+    <!-- <ui-accordions>
+        <ui-accordion title="Accordion 1">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Autem doloribus ratione aut adipisci illo explicabo accusamus
+            deserunt repudiandae quia voluptatem eligendi quae repellat
+            quaerat, sit suscipit magnam consectetur dignissimos tenetur!
+        </ui-accordion>
+        <ui-accordion title="Accordion 2"></ui-accordion>
+    </ui-accordions> -->
+
+    <h3>{{ app }}</h3>
+
+    <ui-alert title="Ops, aconteceu um problema">
+        Não foi possível carregar os dados!
+    </ui-alert>
+
+    <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
+
+    <table class="table">
+
+        <tr class="text-light">
+            <th></th>
+            <th>Serial</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Operadora</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+
+        <tr class="text-danger" ng-class="{selecionado: contato.selecionado}"
+            ng-repeat="contato in contatos | filter:criterioDeBusca">
+            <td><input type="checkbox" ng-model="contato.selecionado"></td>
+            <td>{{ contato.serial }}</td>
+            <td>{{ contato.nome | name }}</td>
+            <td>{{ contato.telefone }}</td>
+            <td>{{ contato.operadora.nome | lowercase }}</td>
+            <td>{{ contato.data | date: 'dd/MM/yyyy' }}</td>
+
+            <!-- <td> 
+                <div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div>
+            </td> -->
+
+        </tr>
+
+    </table>
+    </hr>
+
+    <form name="contatoForm">
+        <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="Nome"
+            ng-required="true" ng-minlenrequiredgth="10">
+        <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="Telefone"
+            ng-="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+        <input class="form-control" type="text" ng-model="contato.data" name="data" placeholder="Data" ui-date>
+
+        <select class="form-control" ng-model="contato.operadora"
+            ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' for operadora in operadoras | orderBy: 'nome'">
+            <option value="">Selecione uma operadora</option>
+        </select>
+    </form>
+
+    <div ng-messages="contatoForm.nome.$error" class="alert alert-danger">
+        <div ng-message="required && contatoForm.nome.$dirty">Por favor, preencha o campo nome</div>
+        <div ng-message="minlength">O campo nome deve ter no mínimo 10 caracteres</div>
+    </div>
+
+    <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger">
+        <div ng-message="required && contatoForm.telefone.$dirty">Por favor, preencha o campo telefone</div>
+        <div ng-message="pattern">O campo telefone deve ter o formato XXXXX-XXXX</div>
+    </div>
+
+    <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)"
+        ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
+    <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)"
+        ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
+
+</div>
